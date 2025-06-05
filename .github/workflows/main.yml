@@ -1,0 +1,23 @@
+name: Windows - Free RDP
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Start RDP Setup
+    runs-on: windows-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Download Essentials
+        run: |
+          Invoke-Webrequest -Uri "https://gitlab.com/chamod2/lm_win-10_github_rdp/-/raw/main/Downloads.bat" -OutFile "Downloads.bat"
+          cmd /c Downloads.bat
+
+      - name: Keep VM alive
+        run: |
+          echo "loop" > loop.bat
+          :loop
+          timeout /t 1800
+          goto loop
